@@ -1,9 +1,16 @@
 const express = require('express')
 const { db } = require('./db/models');
 
+const { userRoute } = require('./routes/users')
+const { postRoute } = require('./routes/posts')
+
 const app = express();
 
-db.sync({force : true})
+app.use('/api/users' , userRoute)
+app.use('/api/posts' , postRoute)
+app.use('/' , express.static(__dirname + '/public'))
+
+db.sync()
 .then(()=> {
     app.listen(8363 , ()=> {
         console.log("Server Started on http://localhost:8363");
